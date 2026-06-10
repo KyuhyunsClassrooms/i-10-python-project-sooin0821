@@ -1,101 +1,93 @@
 # AI 활용 자유 주제 파이썬 미니 프로젝트
-# 이름 또는 학번: 
-# 프로젝트 주제: 
-
-# ============================================================
-# 사용 안내
-# ------------------------------------------------------------
-# 이 파일은 예시 골격입니다.
-# 그대로 제출하지 말고, 반드시 자신의 주제에 맞게 수정하세요.
+# 이름 또는 학번: 20201 강수인
+# 프로젝트 주제: 신제품 바이럴 효과 및 마케팅 점수 계산기
 #
-# 필수 조건
-# 1. 2차원 리스트 사용
-# 2. 함수 2개 이상, 가능하면 3개 이상 분리
-# 3. 조건문 사용
-# 4. 반복문 사용
-# 5. 실행 결과 출력
-# ============================================================
-
-
-# ------------------------------------------------------------
 # 1. 데이터 준비: 2차원 리스트
-# ------------------------------------------------------------
-# 아래 예시는 "활동 추천 프로그램"입니다.
-# 자신의 주제에 맞게 data를 만드세요.
-#
-# 현재 열의 의미:
-# 0번 열: 활동 이름
-# 1번 열: 필요한 시간(분)
-# 2번 열: 추천 기분
-# 3번 열: 활동 유형
-# ------------------------------------------------------------
-
-activities = [
-    ["산책하기", 30, "피곤", "운동"],
-    ["짧은 낮잠", 20, "피곤", "휴식"],
-    ["좋아하는 음악 듣기", 10, "우울", "휴식"],
-    ["문제집 3쪽 풀기", 40, "차분", "공부"],
-    ["방 정리하기", 25, "답답", "생활"],
-    ["친구에게 연락하기", 15, "우울", "소통"],
+# [채널명, 조회수, 좋아요수]
+campaign = [
+    ["SNS홍보", 5000, 250],
+    ["블로그리뷰", 3000, 150],
+    ["유튜브숏폼", 12000, 1200]
 ]
 
-
-# ------------------------------------------------------------
 # 2. 함수 정의
-# ------------------------------------------------------------
 
 def show_intro():
     """프로그램 제목과 안내를 출력한다."""
     print("=" * 40)
-    print("AI 활용 자유 주제 파이썬 미니 프로젝트")
-    print("예시: 기분과 시간에 따른 활동 추천기")
+    print("★ 신제품 바이럴 효과 및 마케팅 점수 계산기 ★")
     print("=" * 40)
 
 
 def get_user_input():
-    """사용자에게 기분과 남은 시간을 입력받는다."""
-    mood = input("현재 기분을 입력하세요. 예: 피곤, 우울, 차분, 답답: ")
-    minutes = int(input("사용 가능한 시간을 분 단위로 입력하세요: "))
-    return mood, minutes
+    """사용자에게 신제품 이름과 분석할 채널 번호를 입력받는다."""
+    product_name = input("가상의 신제품 이름을 입력하세요: ")
+    print("\n[분석할 홍보 채널 선택]")
+    print("1. SNS홍보")
+    print("2. 블로그리뷰")
+    print("3. 유튜브숏폼")
+    
+    # 사용자에게 채널 번호를 정수로 입력받습니다.
+    channel_num = int(input("확인하고 싶은 채널 번호를 입력하세요 (1~3): "))
+    return product_name, channel_num
 
 
-def find_recommendations(data, mood, minutes):
-    """2차원 리스트를 반복하며 조건에 맞는 활동을 찾는다."""
-    results = []
+def calculate_and_evaluate(data, channel_num):
+    """선택한 채널의 데이터를 분석하여 참여율과 등급을 계산한다."""
+    # 리스트의 인덱스는 0부터 시작하므로 입력받은 번호에서 1을 뺍니다.
+    idx = channel_num - 1 
+    
+    # 2차원 리스트에서 사용자가 선택한 행의 데이터를 가져옵니다.
+    selected_channel = data[idx]
+    
+    channel_name = selected_channel[0]  # 채널명
+    views = selected_channel[1]         # 조회수
+    likes = selected_channel[2]         # 좋아요수
 
-    for row in data:
-        name = row[0]
-        required_minutes = row[1]
-        recommended_mood = row[2]
-        activity_type = row[3]
+    # [스스로 채우기 ①] 참여율 계산 공식: (좋아요수 / 조회수) * 100
+    # 아래 빈칸을 올바른 변수명으로 채워보세요!
+    engagement_rate = (likes / views) * 100
 
-        # 조건문: 사용자의 기분과 시간이 활동 조건에 맞는지 판단한다.
-        if recommended_mood == mood and required_minutes <= minutes:
-            results.append([name, required_minutes, activity_type])
-
-    return results
-
-
-def print_result(results):
-    """추천 결과를 출력한다."""
-    print("\n[추천 결과]")
-
-    if len(results) == 0:
-        print("조건에 맞는 활동이 없습니다.")
-        print("시간을 늘리거나 다른 기분을 입력해 보세요.")
+    # [스스로 채우기 ②] 참여율에 따른 등급 판정 (조건문)
+    # 8% 이상: 대박 / 4% 이상: 보통 / 그 외: 노력 필요
+    if engagement_rate >= 8:
+        grade = "대박 (성공적인 바이럴!)"
+    elif engagement_rate >= 4:
+        grade = "보통 (안정적인 유지)"
     else:
-        for item in results:
-            print(f"- {item[0]} / {item[1]}분 / 유형: {item[2]}")
+        grade = "노력 필요 (콘텐츠 개선 필요)"
+
+    return channel_name, views, likes, engagement_rate, grade
+
+
+def print_result(product, channel, views, likes, rate, grade):
+    """최종 마케팅 분석 결과를 화면에 출력한다."""
+    print("\n" + "=" * 40)
+    print(f"[ 마케팅 분석 결과 보고서 ]")
+    print("-" * 40)
+    print(f"- 분석 제품명: {product}")
+    print(f"- 선택 채널: {channel}")
+    print(f"- 누적 조회수: {views}회")
+    print(f"- 누적 좋아요수: {likes}개")
+    # :.2f는 소수점 둘째 자리까지 출력하라는 뜻입니다.
+    print(f"- 계산된 참여율: {rate:.2f}%") 
+    print(f"- 최종 성과 등급: {grade}")
+    print("=" * 40)
 
 
 def main():
+    # 1. 안내 문구 출력
     show_intro()
-    mood, minutes = get_user_input()
-    results = find_recommendations(activities, mood, minutes)
-    print_result(results)
+    
+    # 2. 사용자 입력 받기
+    product_name, channel_num = get_user_input()
+    
+    # 3. 데이터 분석 및 등급 계산
+    channel_name, views, likes, rate, grade = calculate_and_evaluate(campaign, channel_num)
+    
+    # 4. 결과 출력하기
+    print_result(product_name, channel_name, views, likes, rate, grade)
 
 
-# ------------------------------------------------------------
 # 3. 프로그램 실행
-# ------------------------------------------------------------
 main()
